@@ -29,17 +29,18 @@ def load_images(image_path):
         all_images.append(img)
     return all_images
 
-train_melanoma = load_images('skin-lesions\\train\\melanoma\\*.jpg')
-train_nevus = load_images('skin-lesions\\train\\nevus\\*.jpg')
-train_seborrheic_keratosis = load_images('skin-lesions\\train\\seborrheic_keratosis\\*.jpg')    
+train_melanoma = load_images('..\\..\\data\\skin-lesions\\train\\melanoma\\*.jpg')
+print(len(train_melanoma))
+# train_nevus = load_images('skin-lesions\\train\\nevus\\*.jpg')
+# train_seborrheic_keratosis = load_images('skin-lesions\\train\\seborrheic_keratosis\\*.jpg')    
 
-test_melanoma = load_images('skin-lesions\\test\\melanoma\\*.jpg')
-test_nevus = load_images('skin-lesions\\test\\nevus\\*.jpg')
-test_seborrheic_keratosis = load_images('skin-lesions\\test\\seborrheic_keratosis\\*.jpg')
+# test_melanoma = load_images('skin-lesions\\test\\melanoma\\*.jpg')
+# test_nevus = load_images('skin-lesions\\test\\nevus\\*.jpg')
+# test_seborrheic_keratosis = load_images('skin-lesions\\test\\seborrheic_keratosis\\*.jpg')
 
-valid_melanoma = load_images('skin-lesions\\valid\\melanoma\\*.jpg')
-valid_nevus = load_images('skin-lesions\\valid\\nevus\\*.jpg')
-valid_seborrheic_keratosis = load_images('skin-lesions\\valid\\seborrheic_keratosis\\*.jpg')
+# valid_melanoma = load_images('skin-lesions\\valid\\melanoma\\*.jpg')
+# valid_nevus = load_images('skin-lesions\\valid\\nevus\\*.jpg')
+# valid_seborrheic_keratosis = load_images('skin-lesions\\valid\\seborrheic_keratosis\\*.jpg')
 
 # convert the image pixels to a numpy array
 def convert_to_array(all_images):
