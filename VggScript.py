@@ -11,55 +11,17 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.applications.vgg16 import VGG16
 from keras.models import Model
 from keras.layers import Dense, Flatten
+import my_functions as f
+from keras.preprocessing import image
+from keras.applications.vgg16 import preprocess_input, decode_predictions 
 
 # load the model
 model = VGG16(weights='imagenet')
 
-from keras.preprocessing import image
-from keras.applications.vgg16 import preprocess_input, decode_predictions  
-
-# load an image from file
-#imge_path = 'C:/Users/odesa/Desktop/Melanoma/skin_lesion/train/*.*
-# all_images = []
-# for img_path in glob.glob(imge_path):
-#     img = image.load_img(img_path, target_size=(224, 224))
-#     all_images.append(img)
-
-#print(glob.glob('skin-lesions\\train\\melanoma\\*.jpg'))
-
-
-def load_images(image_path, label):
-    all_images = []
-    labels = []
-    for file in glob.glob(image_path):
-        img = image.load_img(file, target_size=(224, 224))
-        all_images.append(img)
-        labels.append(label)
-    return all_images, labels
-
-train_melanoma_imgs, train_melanoma_labels = load_images('..\\data\\skin-lesions\\train\\melanoma\\*.jpg', 'melanoma')
-train_nevus_imgs, train_nevus_labels = load_images('..\\data\\skin-lesions\\train\\nevus\\*.jpg', 'nevus')
-train_seborrheic_keratosis_imgs, train_seborrheic_keratosis_labels = load_images('..\\data\\skin-lesions\\train\\seborrheic_keratosis\\*.jpg', 'seborrheic_keratosis')
-    
-all_train_images = train_melanoma_imgs + train_nevus_imgs + train_seborrheic_keratosis_imgs
-all_train_labels = train_melanoma_labels + train_nevus_labels + train_seborrheic_keratosis_labels
-
-test_melanoma, test_melanoma_labels = load_images('..\\data\\skin-lesions\\test\\melanoma\\*.jpg', 'melanoma')
-test_nevus, test_nevus_labels = load_images('..\\data\\skin-lesions\\test\\nevus\\*.jpg', 'nevus')
-test_seborrheic_keratosis, test_seborrheic_keratosis_labels = load_images('..\\data\\skin-lesions\\test\\seborrheic_keratosis\\*.jpg', 'seborrheic_keratosis')
-
-all_test_images = test_melanoma + test_nevus + test_seborrheic_keratosis
-all_test_labels = test_melanoma_labels + test_nevus_labels + test_seborrheic_keratosis_labels
-
-valid_melanoma, valid_melanoma_labels = load_images('..\\data\\skin-lesions\\valid\\melanoma\\*.jpg', 'melanoma')
-valid_nevus, valid_nevus_labels = load_images('..\\data\\skin-lesions\\valid\\nevus\\*.jpg', 'nevus')
-valid_seborrheic_keratosis, valid_seborrheic_keratosis_labels = load_images('..\\data\\skin-lesions\\valid\\seborrheic_keratosis\\*.jpg', 'seborrheic_keratosis')
-
-all_valid_images = valid_melanoma + valid_nevus + valid_seborrheic_keratosis
-all_valid_labels = valid_melanoma_labels + valid_nevus_labels + valid_seborrheic_keratosis_labels
-
-print(len(all_train_images))    
-print(len(all_train_labels))
+# loop through each subdirectory collecting images and respective labels
+train_images, train_labels = f.load_images('../data/skin-lesions/train/')
+test_images, test_labels = f.load_images('../data/skin-lesions/test/')
+valid_images, valid_labels = f.load_images('../data/skin-lesions/valid/')
 
 # # convert the image pixels to a numpy array
 # # encode the labels
