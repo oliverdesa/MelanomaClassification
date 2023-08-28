@@ -23,61 +23,61 @@ train_images, train_labels = f.load_images('../data/skin-lesions/train/')
 test_images, test_labels = f.load_images('../data/skin-lesions/test/')
 valid_images, valid_labels = f.load_images('../data/skin-lesions/valid/')
 
-# # convert the image pixels to a numpy array
-# # encode the labels
-# all_train_images = [image.img_to_array(img) for img in all_train_images]
-# all_train_images = np.array(all_train_images).astype('float32')
-# all_train_images /= 255.0
+# convert the image pixels to a numpy array
+# encode the labels
+train_images = [image.img_to_array(img) for img in train_images]
+train_images = np.array(train_images).astype('float32')
+train_images /= 255.0
 
-# encoder = LabelEncoder()
-# all_train_labels = encoder.fit_transform(all_train_labels)
-# all_train_labels = to_categorical(all_train_labels)
+encoder = LabelEncoder()
+train_labels = encoder.fit_transform(train_labels)
+train_labels = to_categorical(train_labels)
 
-# all_test_images = [image.img_to_array(img) for img in all_test_images]
-# all_test_images = np.array(all_test_images).astype('float32')
-# all_test_images /= 255.0
+test_images = [image.img_to_array(img) for img in test_images]
+test_images = np.array(test_images).astype('float32')
+test_images /= 255.0
 
-# all_test_labels = encoder.fit_transform(all_test_labels)
-# all_test_labels = to_categorical(all_test_labels)
+test_labels = encoder.fit_transform(test_labels)
+test_labels = to_categorical(test_labels)
 
-# all_valid_images = [image.img_to_array(img) for img in all_valid_images]
-# all_valid_images = np.array(all_valid_images).astype('float32')
-# all_valid_images /= 255.0
+valid_images = [image.img_to_array(img) for img in valid_images]
+valid_images = np.array(valid_images).astype('float32')
+valid_images /= 255.0
 
-# all_valid_labels = encoder.fit_transform(all_valid_labels)
-# all_valid_labels = to_categorical(all_valid_labels)
-
-
-# # reshape into a single sample with 3 channels
-# datagen = ImageDataGenerator(
-#     rotation_range=20,
-#     width_shift_range=0.2,
-#     height_shift_range=0.2,
-#     horizontal_flip=True)
-
-# datagen.fit(all_train_images)
+valid_labels = encoder.fit_transform(valid_labels)
+valid_labels = to_categorical(valid_labels)
 
 
-# # define the model
-# base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
-# x = base_model.output
-# x = Flatten()(x)
-# x = Dense(512, activation='relu')(x)
-# predictions = Dense(len(encoder.classes_), activation='softmax')(x)
+# reshape into a single sample with 3 channels
+datagen = ImageDataGenerator(
+    rotation_range=20,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    horizontal_flip=True)
 
-# model = Model(inputs=base_model.input, outputs=predictions)
+datagen.fit(train_images)
 
-# # Freeze initial layers
-# for layer in base_model.layers:
-#     layer.trainable = False
 
-# # compile the model
-# model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+# define the model
+base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+x = base_model.output
+x = Flatten()(x)
+x = Dense(512, activation='relu')(x)
+predictions = Dense(len(encoder.classes_), activation='softmax')(x)
 
-# # fit the model
-# model.fit(datagen.flow(all_train_images, all_train_labels, batch_size=32),
-#           epochs=5,
-#           validation_data=(all_valid_images, all_valid_labels))
+model = Model(inputs=base_model.input, outputs=predictions)
 
-# # evaluate the model
+# Freeze initial layers
+for layer in base_model.layers:
+    layer.trainable = False
+
+# compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# fit the model
+model.fit(datagen.flow(train_images, train_labels, batch_size=32),
+          epochs=5,
+          validation_data=(valid_images, valid_labels))
+
+# evaluate the model
 
