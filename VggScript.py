@@ -1,7 +1,3 @@
-#import tensorflow as tf
-#print(tf.__version__)
-import os
-import glob
 import tensorflow as tf
 from keras.applications.vgg16 import VGG16
 import numpy as np
@@ -23,26 +19,13 @@ train_images, train_labels = f.load_images('../data/skin-lesions/train/')
 test_images, test_labels = f.load_images('../data/skin-lesions/test/')
 valid_images, valid_labels = f.load_images('../data/skin-lesions/valid/')
 
-# convert the image pixels to a numpy array
 # encode the labels
-train_images = [image.img_to_array(img) for img in train_images]
-train_images = np.array(train_images).astype('float32')
-train_images /= 255.0
-
 encoder = LabelEncoder()
 train_labels = encoder.fit_transform(train_labels)
 train_labels = to_categorical(train_labels)
 
-test_images = [image.img_to_array(img) for img in test_images]
-test_images = np.array(test_images).astype('float32')
-test_images /= 255.0
-
 test_labels = encoder.fit_transform(test_labels)
 test_labels = to_categorical(test_labels)
-
-valid_images = [image.img_to_array(img) for img in valid_images]
-valid_images = np.array(valid_images).astype('float32')
-valid_images /= 255.0
 
 valid_labels = encoder.fit_transform(valid_labels)
 valid_labels = to_categorical(valid_labels)
