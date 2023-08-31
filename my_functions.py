@@ -17,6 +17,7 @@ def load_images(main_directory):
             # Loop through each file in the subdirectory
             for file in glob.glob(os.path.join(full_subdir_path, '*.*')):
                 img = image.load_img(file, target_size=(224, 224))
+                img = image.img_to_array(img)
                 all_images.append(img)
                 labels.append(subdir)  # using the subdirectory name as label
     
