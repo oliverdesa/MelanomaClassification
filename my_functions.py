@@ -1,7 +1,7 @@
 import os
 import glob
+import numpy as np
 from keras.preprocessing import image
-
 
 def load_images(main_directory):
     all_images = []
@@ -17,10 +17,15 @@ def load_images(main_directory):
             # Loop through each file in the subdirectory
             for file in glob.glob(os.path.join(full_subdir_path, '*.*')):
                 img = image.load_img(file, target_size=(224, 224))
-                all_images.append(img)
+                img_array = image.img_to_array(img)
+                img = image.img_to_array(img)
+                all_images.append(img_array)
                 labels.append(subdir)  # using the subdirectory name as label
+    
+    np_images = np.array(all_images).astype('float32')  # Convert to numpy array
+    np_images /= 255.0 # Normalize images
 
-    return all_images, labels
+    return np_images, labels
 
 
 
